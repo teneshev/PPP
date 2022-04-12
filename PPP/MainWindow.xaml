@@ -1,0 +1,53 @@
+﻿<Window x:Class="PPP.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PPP"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+            <RowDefinition Height="70"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel x:Name="StackLetters" Orientation="Horizontal" Background="{StaticResource ColorMain}">
+            <TextBlock FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" Margin="10" MouseLeftButtonDown="TextBlock_MouseLeftButtonDown">Все</TextBlock>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Background="{StaticResource ColorMain}" Grid.Row="1">
+            <TextBlock>Фамилия</TextBlock>
+            <TextBox x:Name="TxtФамилия" TextChanged="TxtФамилия_TextChanged"></TextBox>
+            <TextBlock>Номер паспорта</TextBlock>
+            <TextBox x:Name="TxtНомер" TextChanged="TxtНомер_TextChanged"></TextBox>
+        </StackPanel>
+
+        <DataGrid Grid.Row="2" x:Name="DataGridКлиенты" ColumnWidth="*" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="DataGridКлиенты_SelectionChanged">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Имя" Binding="{Binding Имя}"/>
+                <DataGridTextColumn Header="Фамилия" Binding="{Binding Фамилия}"/>
+                <DataGridTextColumn Header="Отчество" Binding="{Binding Отчество}"/>
+                <DataGridTextColumn Header="Серия паспорта" Binding="{Binding Серия_паспорта}"/>
+                <DataGridTextColumn Header="Номер паспорта" Binding="{Binding Номер_паспорта}"/>
+                <DataGridTextColumn Header="Телефон" Binding="{Binding Телефон}"/>
+                <DataGridTextColumn Header="Адрес" Binding="{Binding Адрес}"/>
+                <DataGridTemplateColumn Header="Редактировать">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button x:Name="BtnEditData" Click="BtnEditData_Click">Изменить</Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Grid.Row="3" Orientation="Horizontal">
+            <Button x:Name="BtnAd" Content="Добавить" Click="BtnAd_Click_1"/>
+            <Button x:Name="BtnD" Content="Удалить" Click="BtnD_Click_1"/>
+            <Button x:Name="BtnVid" Content="ВыданныеАвто" Click="BtnVid_Click"/>
+        </StackPanel>
+    </Grid>
+
+</Window>
+

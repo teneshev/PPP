@@ -1,0 +1,38 @@
+﻿<Window x:Class="PPP.addVidAvto"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PPP"
+        mc:Ignorable="d"
+        Title="addVidAvto" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="70"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <UniformGrid Columns="2">
+            <TextBlock>Клиент</TextBlock>
+            <ComboBox x:Name="CmbКлиент" DisplayMemberPath="Фамилия" SelectedItem="{Binding Клиенты}"></ComboBox>
+            <TextBlock>Авто</TextBlock>
+            <ComboBox x:Name="CmbГосномер" DisplayMemberPath="Госномер" SelectedItem="{Binding Авто}"></ComboBox>
+            <TextBlock>Дата_выдачи</TextBlock>
+            <DatePicker SelectedDate="{Binding Дата_выдачи}"></DatePicker>
+            <TextBlock>Количество</TextBlock>
+            <TextBox x:Name="TxtКоличество" Text="{Binding Количество_дней}"></TextBox>
+            <TextBlock>Дата_возврата</TextBlock>
+            <DatePicker SelectedDate="{Binding Дата_возврата}"></DatePicker>
+            <TextBlock>Сумма</TextBlock>
+            <TextBox x:Name="TxtСумма" Text="{Binding Сумма}"></TextBox>
+            <TextBlock>Скидка</TextBlock>
+            <ComboBox x:Name="CmbСкидки" DisplayMemberPath="Процент" SelectedItem="{Binding Скидки}"></ComboBox>
+            <TextBlock>Штрафы</TextBlock>
+            <ComboBox x:Name="CmbШтрафы" DisplayMemberPath="Штраф" SelectedItem="{Binding Штрафы}"></ComboBox>
+            <TextBlock>Итого</TextBlock>
+            <TextBox x:Name="TxtИтого" Text="{Binding Сумма}"></TextBox>
+        </UniformGrid>
+        <Button x:Name="BtnSaveData" Grid.Row="1" Click="BtnSaveData_Click">Сохранить</Button>
+    </Grid>
+</Window>
+

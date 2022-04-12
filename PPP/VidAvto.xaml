@@ -1,0 +1,43 @@
+﻿<Window x:Class="PPP.VidAvto"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PPP"
+        mc:Ignorable="d"
+        Title="VidAvto" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal">
+            <Button x:Name="BtnAddData" Content="Добавить" Click="BtnAddData_Click"/>
+            <Button x:Name="BtnDeleteData" Content="Удалить" Click="BtnDeleteData_Click"/>
+
+        </StackPanel>
+        <DataGrid Grid.Row="2" x:Name="DataGridВыданныеАвто" ColumnWidth="*" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="DataGridВыданныеАвто_SelectionChanged">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Клиент" Binding="{Binding Клиенты.Фамилия}"/>
+                <DataGridTextColumn Header="Авто" Binding="{Binding Авто}"/>
+                <DataGridTextColumn Header="Дата выдачи" Binding="{Binding Дата_выдачи}"/>
+                <DataGridTextColumn Header="Количество дней" Binding="{Binding Количество_дней}"/>
+                <DataGridTextColumn Header="Дата возврата" Binding="{Binding Дата_возврата}"/>
+                <DataGridTextColumn Header="Сумма" Binding="{Binding Сумма}"/>
+                <DataGridTextColumn Header="Скидка" Binding="{Binding Скидки.Название}"/>
+                <DataGridTextColumn Header="Штрафы" Binding="{Binding Штрафы}"/>
+                <DataGridTextColumn Header="Итого" Binding="{Binding Итого}"/>
+                <DataGridTemplateColumn Header="Редактировать">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button x:Name="BtnEditData" Click="BtnEditData_Click">Изменить</Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+      
+    </Grid>
+
+</Window>

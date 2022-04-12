@@ -1,0 +1,538 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище arendaModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Авто">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Госномер" Type="nvarchar" MaxLength="50" />
+          <Property Name="Марка" Type="nvarchar" MaxLength="50" />
+          <Property Name="Модель" Type="nvarchar" MaxLength="50" />
+          <Property Name="Страховка" Type="int" />
+          <Property Name="Год_выпуска" Type="int" />
+          <Property Name="Стоимость_за_сутки" Type="money" />
+          <Property Name="Обслущивающий_персонал" Type="int" />
+          <Property Name="Категория" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="ВыданныеАвто">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Клиент" Type="int" />
+          <Property Name="Авто" Type="int" />
+          <Property Name="Дата_выдачи" Type="datetime" />
+          <Property Name="Количество_дней" Type="int" />
+          <Property Name="Дата_возврата" Type="datetime" />
+          <Property Name="Сумма" Type="money" />
+          <Property Name="Скидка" Type="int" />
+          <Property Name="Штрафы" Type="int" />
+          <Property Name="Итого" Type="money" />
+        </EntityType>
+        <EntityType Name="Клиенты">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Имя" Type="nvarchar" MaxLength="50" />
+          <Property Name="Фамилия" Type="nvarchar" MaxLength="50" />
+          <Property Name="Отчество" Type="nvarchar" MaxLength="50" />
+          <Property Name="Серия_паспорта" Type="nvarchar" MaxLength="50" />
+          <Property Name="Номер_паспорта" Type="nvarchar" MaxLength="50" />
+          <Property Name="Телефон" Type="nvarchar" MaxLength="50" />
+          <Property Name="Адрес" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Персонал">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Имя" Type="nvarchar" MaxLength="50" />
+          <Property Name="Фамилия" Type="nvarchar" MaxLength="50" />
+          <Property Name="Отчество" Type="nvarchar" MaxLength="50" />
+          <Property Name="Дата_рождения" Type="date" />
+          <Property Name="Серия_паспорта" Type="nvarchar" MaxLength="50" />
+          <Property Name="Номер_паспорта" Type="nvarchar" MaxLength="50" />
+          <Property Name="Место_проживания" Type="nvarchar" MaxLength="50" />
+          <Property Name="Телефон" Type="nvarchar" MaxLength="50" />
+          <Property Name="Пол" Type="int" />
+        </EntityType>
+        <EntityType Name="Пол">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Навзание" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Скидки">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Название" Type="nvarchar" MaxLength="50" />
+          <Property Name="Процент" Type="float" />
+        </EntityType>
+        <EntityType Name="Страховка">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Дата_начала" Type="date" />
+          <Property Name="Дата_окончания" Type="date" />
+        </EntityType>
+        <EntityType Name="Штрафы">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Штраф" Type="nvarchar" MaxLength="50" />
+          <Property Name="Сумма" Type="money" />
+        </EntityType>
+        <Association Name="FK_Авто_Персонал">
+          <End Role="Персонал" Type="Self.Персонал" Multiplicity="0..1" />
+          <End Role="Авто" Type="Self.Авто" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Персонал">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Авто">
+              <PropertyRef Name="Обслущивающий_персонал" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Авто_Страховка">
+          <End Role="Страховка" Type="Self.Страховка" Multiplicity="0..1" />
+          <End Role="Авто" Type="Self.Авто" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Страховка">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Авто">
+              <PropertyRef Name="Страховка" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Выданные авто_Авто">
+          <End Role="Авто" Type="Self.Авто" Multiplicity="0..1" />
+          <End Role="ВыданныеАвто" Type="Self.ВыданныеАвто" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Авто">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ВыданныеАвто">
+              <PropertyRef Name="Авто" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Выданные авто_Клиенты">
+          <End Role="Клиенты" Type="Self.Клиенты" Multiplicity="0..1" />
+          <End Role="ВыданныеАвто" Type="Self.ВыданныеАвто" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Клиенты">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ВыданныеАвто">
+              <PropertyRef Name="Клиент" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Выданные авто_Скидки">
+          <End Role="Скидки" Type="Self.Скидки" Multiplicity="0..1" />
+          <End Role="ВыданныеАвто" Type="Self.ВыданныеАвто" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Скидки">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ВыданныеАвто">
+              <PropertyRef Name="Скидка" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Выданные авто_Штрафы">
+          <End Role="Штрафы" Type="Self.Штрафы" Multiplicity="0..1" />
+          <End Role="ВыданныеАвто" Type="Self.ВыданныеАвто" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Штрафы">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ВыданныеАвто">
+              <PropertyRef Name="Штрафы" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище arendaModelContainer">
+          <EntitySet Name="Авто" EntityType="Self.Авто" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ВыданныеАвто" EntityType="Self.ВыданныеАвто" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Клиенты" EntityType="Self.Клиенты" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Персонал" EntityType="Self.Персонал" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Пол" EntityType="Self.Пол" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Скидки" EntityType="Self.Скидки" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Страховка" EntityType="Self.Страховка" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Штрафы" EntityType="Self.Штрафы" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Авто_Персонал" Association="Self.FK_Авто_Персонал">
+            <End Role="Персонал" EntitySet="Персонал" />
+            <End Role="Авто" EntitySet="Авто" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Авто_Страховка" Association="Self.FK_Авто_Страховка">
+            <End Role="Страховка" EntitySet="Страховка" />
+            <End Role="Авто" EntitySet="Авто" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Выданные авто_Авто" Association="Self.FK_Выданные авто_Авто">
+            <End Role="Авто" EntitySet="Авто" />
+            <End Role="ВыданныеАвто" EntitySet="ВыданныеАвто" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Выданные авто_Клиенты" Association="Self.FK_Выданные авто_Клиенты">
+            <End Role="Клиенты" EntitySet="Клиенты" />
+            <End Role="ВыданныеАвто" EntitySet="ВыданныеАвто" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Выданные авто_Скидки" Association="Self.FK_Выданные авто_Скидки">
+            <End Role="Скидки" EntitySet="Скидки" />
+            <End Role="ВыданныеАвто" EntitySet="ВыданныеАвто" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Выданные авто_Штрафы" Association="Self.FK_Выданные авто_Штрафы">
+            <End Role="Штрафы" EntitySet="Штрафы" />
+            <End Role="ВыданныеАвто" EntitySet="ВыданныеАвто" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="arendaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Авто">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Госномер" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Марка" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Модель" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Страховка" Type="Int32" />
+          <Property Name="Год_выпуска" Type="Int32" />
+          <Property Name="Стоимость_за_сутки" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Обслущивающий_персонал" Type="Int32" />
+          <Property Name="Категория" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Персонал" Relationship="Self.FK_Авто_Персонал" FromRole="Авто" ToRole="Персонал" />
+          <NavigationProperty Name="Страховка1" Relationship="Self.FK_Авто_Страховка" FromRole="Авто" ToRole="Страховка" />
+          <NavigationProperty Name="ВыданныеАвто" Relationship="Self.FK_Выданные_авто_Авто" FromRole="Авто" ToRole="ВыданныеАвто" />
+        </EntityType>
+        <EntityType Name="ВыданныеАвто">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Клиент" Type="Int32" />
+          <Property Name="Авто" Type="Int32" />
+          <Property Name="Дата_выдачи" Type="DateTime" Precision="3" />
+          <Property Name="Количество_дней" Type="Int32" />
+          <Property Name="Дата_возврата" Type="DateTime" Precision="3" />
+          <Property Name="Сумма" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Скидка" Type="Int32" />
+          <Property Name="Штрафы" Type="Int32" />
+          <Property Name="Итого" Type="Decimal" Precision="19" Scale="4" />
+          <NavigationProperty Name="Авто1" Relationship="Self.FK_Выданные_авто_Авто" FromRole="ВыданныеАвто" ToRole="Авто" />
+          <NavigationProperty Name="Клиенты" Relationship="Self.FK_Выданные_авто_Клиенты" FromRole="ВыданныеАвто" ToRole="Клиенты" />
+          <NavigationProperty Name="Скидки" Relationship="Self.FK_Выданные_авто_Скидки" FromRole="ВыданныеАвто" ToRole="Скидки" />
+          <NavigationProperty Name="Штрафы1" Relationship="Self.FK_Выданные_авто_Штрафы" FromRole="ВыданныеАвто" ToRole="Штрафы" />
+        </EntityType>
+        <EntityType Name="Клиенты">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Имя" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Фамилия" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Отчество" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Серия_паспорта" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Номер_паспорта" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Телефон" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Адрес" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ВыданныеАвто" Relationship="Self.FK_Выданные_авто_Клиенты" FromRole="Клиенты" ToRole="ВыданныеАвто" />
+        </EntityType>
+        <EntityType Name="Персонал">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Имя" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Фамилия" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Отчество" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Дата_рождения" Type="DateTime" Precision="0" />
+          <Property Name="Серия_паспорта" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Номер_паспорта" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Место_проживания" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Телефон" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Пол" Type="Int32" />
+          <NavigationProperty Name="Авто" Relationship="Self.FK_Авто_Персонал" FromRole="Персонал" ToRole="Авто" />
+        </EntityType>
+        <EntityType Name="Пол">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Навзание" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Скидки">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Название" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Процент" Type="Double" />
+          <NavigationProperty Name="ВыданныеАвто" Relationship="Self.FK_Выданные_авто_Скидки" FromRole="Скидки" ToRole="ВыданныеАвто" />
+        </EntityType>
+        <EntityType Name="Страховка">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Дата_начала" Type="DateTime" Precision="0" />
+          <Property Name="Дата_окончания" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Авто" Relationship="Self.FK_Авто_Страховка" FromRole="Страховка" ToRole="Авто" />
+        </EntityType>
+        <EntityType Name="Штрафы">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Штраф" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Сумма" Type="Decimal" Precision="19" Scale="4" />
+          <NavigationProperty Name="ВыданныеАвто" Relationship="Self.FK_Выданные_авто_Штрафы" FromRole="Штрафы" ToRole="ВыданныеАвто" />
+        </EntityType>
+        <Association Name="FK_Авто_Персонал">
+          <End Role="Персонал" Type="Self.Персонал" Multiplicity="0..1" />
+          <End Role="Авто" Type="Self.Авто" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Персонал">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Авто">
+              <PropertyRef Name="Обслущивающий_персонал" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Авто_Страховка">
+          <End Role="Страховка" Type="Self.Страховка" Multiplicity="0..1" />
+          <End Role="Авто" Type="Self.Авто" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Страховка">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Авто">
+              <PropertyRef Name="Страховка" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Выданные_авто_Авто">
+          <End Role="Авто" Type="Self.Авто" Multiplicity="0..1" />
+          <End Role="ВыданныеАвто" Type="Self.ВыданныеАвто" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Авто">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ВыданныеАвто">
+              <PropertyRef Name="Авто" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Выданные_авто_Клиенты">
+          <End Role="Клиенты" Type="Self.Клиенты" Multiplicity="0..1" />
+          <End Role="ВыданныеАвто" Type="Self.ВыданныеАвто" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Клиенты">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ВыданныеАвто">
+              <PropertyRef Name="Клиент" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Выданные_авто_Скидки">
+          <End Role="Скидки" Type="Self.Скидки" Multiplicity="0..1" />
+          <End Role="ВыданныеАвто" Type="Self.ВыданныеАвто" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Скидки">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ВыданныеАвто">
+              <PropertyRef Name="Скидка" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Выданные_авто_Штрафы">
+          <End Role="Штрафы" Type="Self.Штрафы" Multiplicity="0..1" />
+          <End Role="ВыданныеАвто" Type="Self.ВыданныеАвто" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Штрафы">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ВыданныеАвто">
+              <PropertyRef Name="Штрафы" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="arendaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Авто" EntityType="Self.Авто" />
+          <EntitySet Name="ВыданныеАвто" EntityType="Self.ВыданныеАвто" />
+          <EntitySet Name="Клиенты" EntityType="Self.Клиенты" />
+          <EntitySet Name="Персонал" EntityType="Self.Персонал" />
+          <EntitySet Name="Пол" EntityType="Self.Пол" />
+          <EntitySet Name="Скидки" EntityType="Self.Скидки" />
+          <EntitySet Name="Страховка" EntityType="Self.Страховка" />
+          <EntitySet Name="Штрафы" EntityType="Self.Штрафы" />
+          <AssociationSet Name="FK_Авто_Персонал" Association="Self.FK_Авто_Персонал">
+            <End Role="Персонал" EntitySet="Персонал" />
+            <End Role="Авто" EntitySet="Авто" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Авто_Страховка" Association="Self.FK_Авто_Страховка">
+            <End Role="Страховка" EntitySet="Страховка" />
+            <End Role="Авто" EntitySet="Авто" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Выданные_авто_Авто" Association="Self.FK_Выданные_авто_Авто">
+            <End Role="Авто" EntitySet="Авто" />
+            <End Role="ВыданныеАвто" EntitySet="ВыданныеАвто" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Выданные_авто_Клиенты" Association="Self.FK_Выданные_авто_Клиенты">
+            <End Role="Клиенты" EntitySet="Клиенты" />
+            <End Role="ВыданныеАвто" EntitySet="ВыданныеАвто" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Выданные_авто_Скидки" Association="Self.FK_Выданные_авто_Скидки">
+            <End Role="Скидки" EntitySet="Скидки" />
+            <End Role="ВыданныеАвто" EntitySet="ВыданныеАвто" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Выданные_авто_Штрафы" Association="Self.FK_Выданные_авто_Штрафы">
+            <End Role="Штрафы" EntitySet="Штрафы" />
+            <End Role="ВыданныеАвто" EntitySet="ВыданныеАвто" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище arendaModelContainer" CdmEntityContainer="arendaEntities">
+          <EntitySetMapping Name="Авто">
+            <EntityTypeMapping TypeName="arendaModel.Авто">
+              <MappingFragment StoreEntitySet="Авто">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Госномер" ColumnName="Госномер" />
+                <ScalarProperty Name="Марка" ColumnName="Марка" />
+                <ScalarProperty Name="Модель" ColumnName="Модель" />
+                <ScalarProperty Name="Страховка" ColumnName="Страховка" />
+                <ScalarProperty Name="Год_выпуска" ColumnName="Год_выпуска" />
+                <ScalarProperty Name="Стоимость_за_сутки" ColumnName="Стоимость_за_сутки" />
+                <ScalarProperty Name="Обслущивающий_персонал" ColumnName="Обслущивающий_персонал" />
+                <ScalarProperty Name="Категория" ColumnName="Категория" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ВыданныеАвто">
+            <EntityTypeMapping TypeName="arendaModel.ВыданныеАвто">
+              <MappingFragment StoreEntitySet="ВыданныеАвто">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Клиент" ColumnName="Клиент" />
+                <ScalarProperty Name="Авто" ColumnName="Авто" />
+                <ScalarProperty Name="Дата_выдачи" ColumnName="Дата_выдачи" />
+                <ScalarProperty Name="Количество_дней" ColumnName="Количество_дней" />
+                <ScalarProperty Name="Дата_возврата" ColumnName="Дата_возврата" />
+                <ScalarProperty Name="Сумма" ColumnName="Сумма" />
+                <ScalarProperty Name="Скидка" ColumnName="Скидка" />
+                <ScalarProperty Name="Штрафы" ColumnName="Штрафы" />
+                <ScalarProperty Name="Итого" ColumnName="Итого" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Клиенты">
+            <EntityTypeMapping TypeName="arendaModel.Клиенты">
+              <MappingFragment StoreEntitySet="Клиенты">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Имя" ColumnName="Имя" />
+                <ScalarProperty Name="Фамилия" ColumnName="Фамилия" />
+                <ScalarProperty Name="Отчество" ColumnName="Отчество" />
+                <ScalarProperty Name="Серия_паспорта" ColumnName="Серия_паспорта" />
+                <ScalarProperty Name="Номер_паспорта" ColumnName="Номер_паспорта" />
+                <ScalarProperty Name="Телефон" ColumnName="Телефон" />
+                <ScalarProperty Name="Адрес" ColumnName="Адрес" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Персонал">
+            <EntityTypeMapping TypeName="arendaModel.Персонал">
+              <MappingFragment StoreEntitySet="Персонал">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Имя" ColumnName="Имя" />
+                <ScalarProperty Name="Фамилия" ColumnName="Фамилия" />
+                <ScalarProperty Name="Отчество" ColumnName="Отчество" />
+                <ScalarProperty Name="Дата_рождения" ColumnName="Дата_рождения" />
+                <ScalarProperty Name="Серия_паспорта" ColumnName="Серия_паспорта" />
+                <ScalarProperty Name="Номер_паспорта" ColumnName="Номер_паспорта" />
+                <ScalarProperty Name="Место_проживания" ColumnName="Место_проживания" />
+                <ScalarProperty Name="Телефон" ColumnName="Телефон" />
+                <ScalarProperty Name="Пол" ColumnName="Пол" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Пол">
+            <EntityTypeMapping TypeName="arendaModel.Пол">
+              <MappingFragment StoreEntitySet="Пол">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Навзание" ColumnName="Навзание" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Скидки">
+            <EntityTypeMapping TypeName="arendaModel.Скидки">
+              <MappingFragment StoreEntitySet="Скидки">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Название" ColumnName="Название" />
+                <ScalarProperty Name="Процент" ColumnName="Процент" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Страховка">
+            <EntityTypeMapping TypeName="arendaModel.Страховка">
+              <MappingFragment StoreEntitySet="Страховка">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Дата_начала" ColumnName="Дата_начала" />
+                <ScalarProperty Name="Дата_окончания" ColumnName="Дата_окончания" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Штрафы">
+            <EntityTypeMapping TypeName="arendaModel.Штрафы">
+              <MappingFragment StoreEntitySet="Штрафы">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Штраф" ColumnName="Штраф" />
+                <ScalarProperty Name="Сумма" ColumnName="Сумма" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
